@@ -1,0 +1,42 @@
+Package: cycling
+Title: Reporting for cycling tests
+Version: 0.0.1
+Date: 2024-08-06
+Authors@R: 
+    person(given = "Kevin",
+           family = "Cazelles",
+           role = c("aut", "cre"),
+           email = "kevin.cazelles@insileco.io",
+           comment = c(ORCID = "0000-0001-6619-9874"),
+    person(given   = "David",
+           family  = "Beauchesne",
+           role    = c("aut", "cre", "cph"),
+           email   = "david.beauchesne@insileco.io",
+           comment = c(ORCID = "0000-0002-3590-8161")))
+Description: Helper package to generate reports for cycling tests
+URL: https://github.com/inSileco/cycling_tests
+BugReports: https://github.com/inSileco/cycling_tests/issues
+Depends: R (>= 4.1.0)
+Imports: 
+    cli,
+    dplyr,
+    fs,
+    glue,
+    kableExtra,
+    knitr,
+    pagedown,
+    rmarkdown,
+    utils,
+    whisker,
+    yaml
+Suggests:
+    htmltools,
+    fontawesome,
+    testthat (>= 3.0.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Config/testthat/edition: 3
+VignetteBuilder: knitr

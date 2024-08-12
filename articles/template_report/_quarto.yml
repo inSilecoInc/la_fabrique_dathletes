@@ -1,0 +1,11 @@
+project:
+  output-dir: ../../docs
+
+format:
+  html:
+    theme: cosmo
+
+execute:
+  echo: false
+  warning: false
+  error: false

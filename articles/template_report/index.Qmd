@@ -49,7 +49,7 @@ Date de l'évaluation <br>
 #| label: athlete
 #| fig-width: 12
 #| fig-height: 2
-col <- "#ADA9C7"
+col <- "#2257A0"
 labs <- c("Fréquence cardiaque", "Poids", "Taille", "Âge")
 unt <- c("(Battements / min)", "(kg)", "(cm)", "")
 vals <- c(48, 187, 80, 182, 43)
@@ -71,7 +71,8 @@ df <- data.frame(
   y = c(.65, .75, .7, .25, .5),
   z = c(.68, .6, .5, .4, .4)
 )
-
+#0D2C4B
+#2257A0
 # e_common(font_family = "Raleway", theme = "wonderland")
 # e_common(theme = "wonderland")
 df |>
@@ -80,8 +81,8 @@ df |>
     y,
     max = 1,
     name = "Sommaire des résultats",
-    areaStyle = list(color = "#ADA9C7AA"),
-    itemStyle = list(color = "#ADA9C7"),
+    areaStyle = list(color = "#2257A0AA"),
+    itemStyle = list(color = "#2257A0"),
     splitNumber = 3
   ) |>
   e_radar(
@@ -352,55 +353,57 @@ dat |>
 
 ```{r}
 #| label: temps
+power <- read.csv("data/power.csv")
+hr <- read.csv("data/hr.csv")
+uid <- round(1:nrow(hr) * 2.02,0)
+session1 <- data.frame(
+  time = seq(0,32, length.out = nrow(hr)), 
+  frequency_cardiac = hr$hr,
+  puissance = power$watts[uid],
+  vo2 = hr$vo2,
+  cadence = power$cadence[uid],
+  session = "Session 1"
+)
+
 
 library(dplyr)
 
-# Sample data for two testing sessions
-set.seed(123)
-time <- seq(0, 60, by = 1)
+# # Sample data for two testing sessions
+# set.seed(123)
+# time <- seq(0, 60, by = 1)
 
-session1 <- data.frame(
-  time = time,
-  frequency_cardiac = round(rnorm(61, mean = 150, sd = 10),0),  # Fréquence cardiaque (bpm)
-  puissance = round(rnorm(61, mean = 250, sd = 20),0),          # Puissance (W)
-  vo2 = round(rnorm(61, mean = 3, sd = 0.2),2),                 # VO2 (L/min)
-  cadence = round(rnorm(61, mean = 85, sd = 5),1)               # Cadence (rpm)
-)
+# session1 <- data.frame(
+#   time = time,
+#   frequency_cardiac = round(rnorm(61, mean = 150, sd = 10),0),  # Fréquence cardiaque (bpm)
+#   puissance = round(rnorm(61, mean = 250, sd = 20),0),          # Puissance (W)
+#   vo2 = round(rnorm(61, mean = 3, sd = 0.2),2),                 # VO2 (L/min)
+#   cadence = round(rnorm(61, mean = 85, sd = 5),1)               # Cadence (rpm)
+# )
 
-session2 <- data.frame(
-  time = time,
-  frequency_cardiac = rnorm(61, mean = 145, sd = 10),
-  puissance = rnorm(61, mean = 260, sd = 20),
-  vo2 = rnorm(61, mean = 3.2, sd = 0.2),
-  cadence = rnorm(61, mean = 90, sd = 5)
-)
-
-# Add a session identifier
-session1$session <- "Session 1"
-session2$session <- "Session 2"
+# # Add a session identifier
+# session1$session <- "Session 1"
 
 # Combine the data
-combined_data <- bind_rows(session1, session2)
+# combined_data <- bind_rows(session1, session2)
 combined_data <- session1
 
 combined_data %>%
   group_by(session) %>%
   e_charts(time) %>%
-  e_line(serie = frequency_cardiac, y_index = 0, name = "Fréquence Cardiaque (bpm)", color = "red") %>%
-  e_line(serie = puissance, y_index = 1, name = "Puissance (W)", color = "blue") %>%
-  e_line(serie = vo2, y_index = 2, name = "VO2 (L/min)", color = "green") %>%
-  e_line(serie = cadence, y_index = 3, name = "Cadence (rpm)", color = "orange") %>%
+  e_line(serie = frequency_cardiac, y_index = 0, name = "Fréquence Cardiaque (bpm)", color = "red", symbol='none') %>%
+  e_line(serie = puissance, y_index = 1, name = "Puissance (W)", color = "blue", symbol='none') %>%
+  e_line(serie = vo2, y_index = 2, name = "VO2 (L/min)", color = "green", symbol='none') %>%
+  e_line(serie = cadence, y_index = 3, name = "Cadence (rpm)", color = "orange", symbol='none') %>%
   e_y_axis(index = 0, name = "Fréquence Cardiaque (bpm)", min = 0) %>%
   e_y_axis(index = 1, name = "Puissance (W)", min = 0) %>%
-  e_y_axis(index = 2, name = "VO2 (L/min)", min = 0, offset = 90) %>%
+  e_y_axis(index = 2, name = "VO2 (L/min)", min = 0, offset = 100) %>%
   e_y_axis(index = 3, name = "Cadence (rpm)", min = 0, offset = 180) %>%
   e_title("Série temporelle") %>%
   e_x_axis(name = "Time (minutes)") %>%
   e_legend(show = TRUE) %>%
   e_tooltip(trigger = "axis") %>%
-  e_datazoom(type = "inside") %>%
-  e_grid(right = "20%") %>% # Adjust grid to accommodate multiple y-axes
-  # e_theme("dark") %>%
-  # # e_legend(selectedMode = "single") |> # Allows toggling between sessions
-  e_datazoom(show = FALSE) # hide
+  e_datazoom(type = "slider") %>%
+  e_grid(right = "20%") # %>% # Adjust grid to accommodate multiple y-axes
+  # e_theme("dark") #%>%
+  # e_legend(selectedMode = "single") |> # Allows toggling between sessions
 ```
